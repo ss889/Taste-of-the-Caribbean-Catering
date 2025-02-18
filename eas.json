@@ -1,0 +1,41 @@
+{
+  "cli": {
+    "version": ">= 12.5.4",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development": {
+      "distribution": "store",
+      "ios": {
+        "credentialsSource": "local"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "development": {
+      "ios": {
+        "appleId": "cfish@tocfoodmarket.com",
+        "ascAppId": "6738110813",
+        "appleTeamId": "Q84S462ZZ4"
+      }
+
+    },
+    "production": {
+      "ios": {
+        "appleId": "cfish@tocfoodmarket.com",
+        "ascAppId": "6738110813",
+        "appleTeamId": "Q84S462ZZ4"
+      }
+
+    }
+  }
+}
