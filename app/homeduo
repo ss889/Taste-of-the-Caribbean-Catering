@@ -1,0 +1,89 @@
+import { Image, View, Text, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { icons } from '../../constants'
+import { ScrollView } from 'react-native'
+
+const Home = () => {
+  return (
+    <SafeAreaView>
+        <View className='flex-row justify-between items-center px-5 mt-5'>
+
+        
+            <View>
+                <Text className='text-3xl font-bold text-gray-800'>Welcome Back,</Text>
+                <Text className='text-2xl text-gray-600 mt-1'>Chanice</Text>
+            </View>
+
+        
+            <Image className='w-24 h-24'
+                source = {icons.logo}
+                resizeMode='contain'
+            />
+
+        </View>
+            
+
+       
+
+
+        <View className="flex-row justify-center items-center mt-10">
+            <Image className="w-5 h-5"
+                source = {icons.pin}
+                resizeMode='contain'
+            />
+            <Text className="text-lg text-center ml-2 underline">17 Linden St, Newark, NJ 07102</Text>
+        </View>
+
+        <View className="mt-10">
+            <Text className="text-2xl font-bold text-gray-800 mb-3 ml-5">Current Deals</Text>
+            <ScrollView className='px-5'
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+            >
+                <TouchableOpacity className="w-[217px] h-[125px] bg-gray-200 rounded-3xl mr-4 justify-center items-center border-2">
+                    <Text className="text-lg text-gray-700">Deal 1</Text>
+                </TouchableOpacity>
+                <TouchableOpacity className="w-[217px] h-[125px]  bg-gray-200 rounded-3xl mr-4 justify-center items-center border-2">
+                    <Text className="text-lg text-gray-700">Deal 2</Text>
+                </TouchableOpacity>
+                <TouchableOpacity className="w-[217px] h-[125px]  bg-gray-200 rounded-3xl mr-4 justify-center items-center border-2">
+                    <Text className="text-lg text-gray-700">Deal 3</Text>
+                </TouchableOpacity>
+
+
+                
+          
+            </ScrollView>
+        </View>
+
+
+
+        <View className="mt-10">
+            <Text className="text-2xl font-bold text-gray-800 mb-3 ml-5">New Arrivals</Text>
+            <ScrollView className='px-5'
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+            >
+                <TouchableOpacity className="w-[135px] h-[135px] bg-gray-200 rounded-3xl mr-4 justify-center items-center border-2">
+                    <Text className="text-lg text-gray-700">New Arrival 1</Text>
+                </TouchableOpacity>
+                <TouchableOpacity className="w-[135px] h-[135px] bg-gray-200 rounded-3xl mr-4 justify-center items-center border-2">
+                    <Text className="text-lg text-gray-700">New Arrival 2</Text>
+                </TouchableOpacity>
+                <TouchableOpacity className="w-[135px] h-[135px] bg-gray-200 rounded-3xl mr-4 justify-center items-center border-2">
+                    <Text className="text-lg text-gray-700">New Arrival 3</Text>
+                </TouchableOpacity>
+
+
+                
+          
+            </ScrollView>
+        </View>
+
+    </SafeAreaView>
+  )
+}
+
+export default Home

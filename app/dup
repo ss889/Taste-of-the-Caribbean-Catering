@@ -1,0 +1,208 @@
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { StatusBar, Image, Text, View, Modal, Alert } from "react-native";
+import { Redirect, router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { icons } from "../constants";
+import { TouchableOpacity, TextInput } from "react-native";
+import React, { useState } from 'react';
+import { auth, app, db } from "../firebase";
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
+
+
+
+
+import CustomButton from "@/components/CustomButton";
+
+export default function App() {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(true);
+
+  async function onHandleLogin(){
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+    } catch (error){
+
+    }
+  }
+
+  const onHandleSignup = async () => {
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password)
+      // const user = userCred.user;
+      // const userRef = doc(db, "users", user.uid);
+      // await setDoc(userRef, {
+      //   displayName: "test",
+      //   email: email,
+      //   uid: user.uid
+      // });
+      // console.log("signed up");
+    
+    } catch(error){
+      Alert.alert(error.message);
+    }
+  }
+
+  return (
+    <SafeAreaView>
+      <View className="w-full justify-center items-center px-10">
+        <Image className="mt-10 w-80 h-80"
+          source = {icons.welcome}
+          resizeMode="contain"
+        />
+
+        {/* Welcome Text */}
+      <Text className="text-3xl font-bold mb-5 mt-3">Welcome</Text>
+
+        {/* Instruction Text */}
+        <Text className="text-sm text-gray-500 text-center mb-6">
+          Before enjoying Taste of the Caribbean services, you need to register first.
+        </Text>
+
+        <CustomButton
+          title={"Create Account"}
+          handlePress={() => setModalVisible(true)}
+          containerStyles={"w-[256px] h-[49px] mt-7"}
+          textStyles={"text-[#FFFFFF] font-bold"}
+
+        />
+
+        <CustomButton
+          title={"Login"}
+          handlePress={() => {
+            setIsSignUp(false);
+            setModalVisible(true)
+          }}
+          containerStyles={"w-[256px] h-[49px] mt-7 bg-[#D1FAE5]"}
+          textStyles={"text-[#10B981] font-bold"}
+        />
+
+        <CustomButton 
+          title={"Continue As Guest"}
+          handlePress={() => router.push('/home')}
+          containerStyles={"w-[256px] h-[49px] mt-7"}
+          textStyles={"text-[#FFFFFF] font-bold"}
+        />
+      </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+
+      >
+        <View className="flex-1 justify-end">
+          <View className="bg-white rounded-3xl h-3/4 p-5 shadow-lg">
+            {/* Toggle between Sign In and Sign Up */}
+            
+
+          <View className="flex-row justify-around items-center mt-8 mb-12">
+           
+                <CustomButton
+                title={"Create Account"}
+                handlePress={() => setIsSignUp(true)}
+                containerStyles={`bg-white flex-1 items-center pb-1 ${isSignUp ? 'border-b-4 border-green-500' : ''}`}
+                textStyles={"text-xl font-bold text-gray-900"}
+                isLoading={""}
+                />
+            
+              <CustomButton
+              title={"Login"}
+              handlePress={() => setIsSignUp(false)}
+              containerStyles={`bg-white flex-1 items-center pb-1 ${!isSignUp ? 'border-b-4 border-green-500' : ''}`}
+              textStyles={"text-xl font-bold text-gray-900"}
+              isLoading={""}
+              />
+           
+          </View>
+
+            {/* Form Fields */}
+
+            {isSignUp ? (
+            // Sign-Up Form
+            <>
+              <Text className="font-bold text-lg ml-2">Full Name</Text>
+              <TextInput
+                className="h-12 border border-gray-300 rounded-xl p-2 mb-6 mt-2"
+                placeholder="Full Name"
+              />
+              <Text className="font-bold text-lg ml-2">Email Address</Text>
+              <TextInput
+                className="h-12 border border-gray-300 rounded-xl p-2 mb-4 mt-2"
+                placeholder="Email"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                keyboardType="email-address"
+              />
+              <Text className="font-bold text-lg ml-2">Password</Text>
+              <TextInput
+                className="h-12 border border-gray-300 rounded-xl p-2 mb-4 mt-2"
+                placeholder="Password"
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                secureTextEntry
+              />
+              {/* Sign Up Button */}
+              <CustomButton
+                title="Sign Up"
+                handlePress={() => onHandleSignup()}
+                containerStyles="mt-5 ml-16 h-[49px] w-[256px]"
+                textStyles="text-xl font-bold"
+                isLoading={false}
+              />
+            </>
+          ) : (
+            // Login Form
+            <>
+              <Text className="font-bold text-lg ml-2">Email Address</Text>
+              <TextInput
+                className="h-12 border border-gray-300 rounded-xl p-2 mb-4 mt-2"
+                placeholder="Email"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                keyboardType="email-address"
+              />
+              <Text className="font-bold text-lg ml-2">Password</Text>
+              <TextInput
+                className="h-12 border border-gray-300 rounded-xl p-2 mb-4 mt-2"
+                placeholder="Password"
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                secureTextEntry
+              />
+              {/* Login Button */}
+              <CustomButton
+                title="Login"
+                handlePress={() => onHandleLogin()}
+                containerStyles="mt-5 ml-16 h-[49px] w-[256px]"
+                textStyles="text-xl font-bold"
+                isLoading={false}
+              />
+            </>
+          )}
+
+            
+
+            {/* Close Modal Button */}
+            <TouchableOpacity
+              onPress={() => setModalVisible(false)}
+              className="mt-4"
+            >
+              <Text className="text-center text-red-500">Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <StatusBar barStyle={"dark-content"}/>
+    </SafeAreaView>
+  );
+}
+
