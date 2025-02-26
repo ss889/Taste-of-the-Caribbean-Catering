@@ -9,6 +9,10 @@
       "ios": {
         "credentialsSource": "local"
       }
+      ,
+      "eas": {
+        "projectId": "6c812b1d-e0ed-4d46-9c0c-7e3dbedfb4db"
+      }
     },
     "preview": {
       "distribution": "internal",
